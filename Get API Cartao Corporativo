@@ -4,6 +4,7 @@ import requests
 import key
 import pandas as pd
 import json
+from datetime import datetime, timedelta
 
 link = "http://api.portaldatransparencia.gov.br/api-de-dados/cartoes"
 
@@ -11,17 +12,30 @@ s = requests.Session()
 s.headers.update({'chave-api-dados': key.value})
 
 
+def get_date_today():
+    today = datetime.now()
+    return today.strftime("%d/%m/%Y")
+
+
+# Se você quiser usar uma função que facilite consulta em um intervalo de dias;
+# ex: últimos 30, 60, 90 dias
+def get_date(days_to_subtract):
+    last_day = datetime.now()
+    return last_day - timedelta(days=days_to_subtract)
+
+
 def get_dados(paginas):
-    dados = []
+    data = []
+    today = get_date_today()
 
     for i in range(1, paginas):
         payload = {'codigoOrgao': 20101, 'dataTransacaoInicio': '01/01/2019',
-                   'dataTransacaoFim': '16/08/2022', 'pagina': i}
+                   'dataTransacaoFim': today, 'pagina': i}
         response = s.get(link, params=payload)
         pgdata = json.loads(response.content)
-        dados.append(pgdata[0])
+        data.append(pgdata[0])
 
-    return dados
+    return data
 
 
 def save_dataframe(lista_dicionarios):
@@ -43,5 +57,6 @@ def save_dataframe(lista_dicionarios):
     df.head(10)
 
 
-gastos = get_dados(196)
-save_dataframe(gastos)
+# Infelizmente, a única forma de descobrir a quantidade de páginas é consultando a API (swagger ou postman/insomnia)
+card_expenses = get_dados(196)
+save_dataframe(card_expenses)
