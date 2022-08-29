@@ -11,10 +11,12 @@ def dia_atual():
     hoje = datetime.now()
     return hoje.strftime("%d/%m/%Y")
 
+
 # Se você quiser usar uma funcao que facilite a consulta em um intervalo de dias:
 def gera_data(variacao_dias):
     hoje = datetime.now()
-    return hoje-timedelta(days=variacao_dias)
+    data_inicial = hoje-timedelta(days=variacao_dias)
+    return data_inicial.strftime("%d/%m/%Y")
 
 
 def consulta_cartoes(sessao, api, paginas, data_inicial, data_final):
