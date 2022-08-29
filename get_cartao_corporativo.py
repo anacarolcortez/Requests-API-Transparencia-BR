@@ -5,7 +5,7 @@ import requests
 import json
 import chave
 from datetime import datetime, timedelta
-
+import pandas as pd
 
 def dia_atual():
     hoje = datetime.now()
@@ -48,15 +48,14 @@ def salvar_dataframe(lista_dicionarios):
         'cod_tipo_cartao', 'desc_tipo_cartao', 'id_fornecedor',
         'cpf_fornecedor', 'cnpj_fornecedor', 'insc_social_fornecedor',
         'nome_fornecedor', 'razao_social_fornecedor', 'nome_fantasia_fornecedor',
-        'tipo_fornecedor', 'cod_ug', 'nome_ug', 'desc_ug',
+        'tipo_fornecedor', 'cod_unidade_gestora', 'nome_ug', 'desc_ug',
         'cod_orgao_vinculado', 'cnpj_ovinc', 'sigla_ovinc', 'nome_ovinc',
         'cod_orgao_maximo', 'sigla_omax', 'nome_omax', 'cpf_portador',
         'nis_portador', 'nome_portador'
     ]
     df.columns = labels
-    df.to_csv('dados/cartao_corporativo', sep=';',
+    df.to_csv('dados/cartao_corporativo_PR_2019_2022', sep=';',
               encoding='utf-8', index=False)
-    df.head(10)
     
     
 def requisicao_api_transparencia():
